@@ -2733,3 +2733,7 @@ html {
   padding-left: 3rem;
   padding-right: 3rem;
 }
+
+.pt-12 {
+  padding-top: 3rem;
+}
