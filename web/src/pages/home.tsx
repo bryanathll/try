@@ -106,7 +106,7 @@ export default function Home(){
 
       <div className="prose">
         {messages?.map((message, index) => <p key={(index)}>
-          <em>{message.role}</em>{message.content}</p>)}
+          <em>{message.role}:</em>{message.content}</p>)}
       </div>
 
       <form onSubmit={async e =>{
@@ -135,14 +135,30 @@ export default function Home(){
                 role: "user",
                 ...data
               }
-            ]
+            ],
+            stream: true
           })
         })
-        const json = await response.json()
-        setMessages(messages =>[...messages, {
-          role: "assistant",
-          content:  json.choices[0].message.content
-        }])
+        if(!response.body) return 
+        const reader = response.body?.getReader()
+        const decoder = new TextDecoder()
+
+        let isFinished = false
+        while(!isFinished){
+          const{done, value} = await reader.read()
+          isFinished = done
+
+          const decodedValue = decoder.decode(value)
+          if (!decodedValue) break
+
+          const json = JSON.parse(decodedValue)
+        
+        }  
+          
+        // setMessages(messages =>[...messages, {
+        //   role: "assistant",
+        //   content:  json.choices[0].message.content
+        // }])
       }} >
         <div className="classname form-control">
           <label>
