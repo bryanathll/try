@@ -122,7 +122,7 @@ export default function Home(){
           method: 'POST',
           headers: {
             "Content-Type": "application/json",
-            'Authorization': 'Bearer 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',
+            'Authorization': 'Bearer secretkey',
           },
           body: JSON.stringify({
             model: "gpt-3.5-turbo",
@@ -152,7 +152,7 @@ export default function Home(){
           if (!decodedValue) break
 
           const json = JSON.parse(decodedValue)
-        
+        json
         }  
           
         // setMessages(messages =>[...messages, {
