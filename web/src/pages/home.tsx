@@ -151,8 +151,8 @@ export default function Home(){
           const decodedValue = decoder.decode(value)
           if (!decodedValue) break
 
-          const json = JSON.parse(decodedValue)
-        json
+          const json = JSON.parse(decodedValue.replace(/^data:\s/g, ''))
+          console.log(json)
         }  
           
         // setMessages(messages =>[...messages, {
