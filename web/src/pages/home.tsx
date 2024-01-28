@@ -153,7 +153,7 @@ export default function Home(){
 
           const message = decodedValue.split('\n\n')
           console.log(message)
-          console.log(message.map(message => JSON.parse(message.replace(/^data:/g, '').trim())))
+          // console.log(message.map(message => JSON.parse(message.replace(/^data:/g, '').trim())))
           // const json = JSON.parse(decodedValue.replace(/^data:\s/g, ''))
           // console.log(json)
         }  
