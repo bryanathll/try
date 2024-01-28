@@ -114,10 +114,17 @@ export default function Home(){
         const formData = new FormData(e.currentTarget)
         const data = Object.fromEntries(formData.entries())
 
-        setMessages((messages: Messages)   =>[...messages, {
-          role: 'user',
-          ...data as {content: string}
-        }])
+        setMessages((messages: Messages)=>[...messages, 
+          {
+            role: 'user',
+           ...data as {content: string}
+          },
+          {
+            role: 'assistant',
+            content: ''
+          }
+        ])
+
         const response = await fetch('https://api.openai.com/v1/chat/completions', {
           method: 'POST',
           headers: {
@@ -152,15 +159,27 @@ export default function Home(){
           if (!decodedValue) break
 
           const message = decodedValue.split('\n\n')
-          console.log(message.filter(Boolean).map(message => JSON.parse(message.replace(/^data:/g, '').trim())))
+          const chunks = messages
+          .filter(msg => msg && msg != 'data: [DONE]')
+          .map(message => JSON.parse(message.replace(/^data:/g, '').trim()))
+
+          for (const chunk of chunks){
+            const content = chunk.choices[0].delta.content
+            if (content){
+              setMessages(messages =>[
+                ...messages.slice(0, message.length -1 ),
+                {
+                  role: "assistant",
+                  content: `${messages[messages.length -1].content}${content}`
+                }])
+            }
+          }
+          
           // const json = JSON.parse(decodedValue.replace(/^data:\s/g, ''))
           // console.log(json)
         }  
           
-        // setMessages(messages =>[...messages, {
-        //   role: "assistant",
-        //   content:  json.choices[0].message.content
-        // }])
+        
       }} >
         <div className="classname form-control">
           <label>
