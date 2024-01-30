@@ -69,7 +69,7 @@ export default function Home(){
 
           const message = decodedValue.split('\n\n')
           const chunks = messages
-            .filter(msg => msg && msg !== 'data: [DONE]')
+            .filter(msg => msg && msg.content !== 'data: [DONE]')
             .map(message => JSON.parse(message.replace(/^data:/g, '').trim()))
 
           for (const chunk of chunks){
